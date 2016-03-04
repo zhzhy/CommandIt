@@ -12,10 +12,16 @@ module Commanding
       be relative path to current directory.
     DESC
 
+    def shell_config_name
+      if !@shell_config_name
+        shell_name = File.basename(`echo $SHELL`)
+        @shell_config_name = '.' + shell_name.strip + 'rc'
+      end
+      @shell_config_name
+    end
+
     def shell_config_path
       if !@shell_config_path
-        shell_name = File.basename(`echo $SHELL`)
-        shell_config_name = '.' + shell_name.strip + 'rc'
         @shell_config_path = File.expand_path("~/"+shell_config_name)
       end
      @shell_config_path
@@ -54,6 +60,8 @@ module Commanding
       file.write("\n")
       file.write("alias #{@new_command_name}=\"#{@shell_path}\"")
       file.close
+
+      `source #{"~/" + shell_config_name}`
     end
 
     def shell_path
@@ -83,7 +91,6 @@ module Commanding
     end
 
     def run
-      `cd ~`
       if File.exists?(shell_config_path)
         file = File.open(shell_config_path, 'r+')
         file.each do |line|
@@ -99,6 +106,7 @@ module Commanding
         help! 'No #{@installed_command_name}, nothing to remove.'
       end
 
+      `source #{"~/" + shell_config_name}`
   end
 
   end

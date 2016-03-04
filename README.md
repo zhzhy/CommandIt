@@ -22,7 +22,47 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Run this command:
+
+```
+commanding install new_command_name shell_relative_path
+```
+then a command line tool named **new_command_name** will be created, which link to
+**shell_relative_path**. When you run new_command_name, actually the shell file at
+**shell_relative_path** will run.
+
+When you don't need the **new_command_name**, just run this command:
+
+```
+commanding uninstall new_command_name
+```
+
+then this command **new_command_name** will be removed.
+
+if after **commanding** run, nothing to happen, just quit current terminal, and then
+restart it.
+
+### Example
+
+if you develop a shell file to pull code from the right remote branch, here suppose the
+shell path you developed is pull.sh. In the past you need to run this pull.sh at its parent
+directory, you can't directly run this pull.sh at other project. But with is **commanding**
+command line tool, everythins become easy. Just run this command at pull.sh parent directory:
+
+```
+commanding install pull pull.sh
+```
+Then you can run pull at any git project. After then pull code become this:
+
+```
+pull
+```
+When someday the pull command no needed, just run this command:
+
+```
+commanding uninstall pull
+```
+Then it clean.
 
 ## Development
 
@@ -38,4 +78,3 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
