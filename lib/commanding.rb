@@ -27,7 +27,7 @@ module Commanding
     self.summary = 'Make a command line tool or *.sh run any directory.'
 
     self.arguments = [CLAide::Argument.new('new_command_name', true),
-                      CLAide::Argument.new('shell_file_path', true)]
+                      CLAide::Argument.new('shell_relative_path', true)]
 
     def initialize(argv)
       @new_command_name = argv.shift_argument
@@ -43,7 +43,7 @@ module Commanding
     end
 
     def run
-      `cd ~`
+      File.chmod(777, shell_path) unless File.executable?(shell_path)
 
       file = nil
       if File.exists?(shell_config_path)
@@ -58,7 +58,8 @@ module Commanding
 
     def shell_path
       if !@shell_path
-        @shell_path = File.expand_path(@shell_relative_path, Dir.pwd)
+        expanded_relative_path = File.expand_path(@shell_relative_path)
+        @shell_path = File.expand_path(expanded_relative_path, Dir.pwd)
       end
       @shell_path
     end
